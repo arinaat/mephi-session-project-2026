@@ -1,0 +1,292 @@
+    1  groupadd project2551136
+    2  groupadd -g 4444 curators
+    3  useradd -m -u 5501 -G project2551136 user1
+    4  useradd -m -u 5502 -G project2551136 user2
+    5  useradd -m -u 5503 -G project2551136 user3
+    6  useradd -m -G curators curator1
+    7  useradd -m -G curators curator2
+    8  mkdir /srv/dir-2551136
+    9  chown root:project2551136 /srv/dir-2551136
+   10  chmod 2770 /srv/dir-2551136
+   11  setfacl -m u::rwx,g::rwx,g:curators:rx,o::--- /srv/dir-2551136
+   12  setfacl -d -m u::rwx,g::rwx,g:curators:rx,o::--- /srv/dir-2551136
+   13  su - user1 -c 'echo "from user1" > /srv/dir-2551136/file1'
+   14  su - user2 -c 'echo "from user2" >> /srv/dir-2551136/file1'
+   15  su - user3 -c 'mkdir /srv/dir-2551136/subdir'
+   16  su - user3 -c 'echo "from user3" > /srv/dir-2551136/subdir/file2'
+   17  su - user2 -c 'cat /srv/dir-2551136/file1'
+   18  su - user1 -c 'cat /srv/dir-2551136/subdir/file2'
+   19  su - curator1 -c 'cat /srv/dir-2551136/file1'
+   20  su - curator2 -c 'cat /srv/dir-2551136/subdir/file2'
+   21  su - curator1 -c 'echo "fail" >> /srv/dir-2551136/file1'
+   22  su -s /bin/sh nobody -c 'ls /srv/dir-2551136'
+   23  history -w
+   24  whoami
+   25  nmcli device status
+   26  ip route
+   27  ip -4 addr
+   28  poweroff
+   29  nmcli connection down mephi-static
+   30  nmcli connection up "Проводное подключение 1"
+   31  ip -4 addr show enp0s3
+   32  ip route show default
+   33  ping -c 4 mirrors.fedoraproject.org
+   34  dnf install -y   --disablerepo='rpmfusion*'   --disablerepo='google-chrome'   --disablerepo='copr:*'   --disablerepo='fedora-cisco-openh264'   nginx tcpdump libcap-ng-utils
+   35  rpm -q nginx tcpdump libcap-ng-utils
+   36  nginx -v
+   37  tcpdump --version
+   38  cd /tmp
+   39  dnf download   --disablerepo='rpmfusion*'   --disablerepo='google-chrome'   --disablerepo='copr:*'   --disablerepo='fedora-cisco-openh264'   tcpdump
+   40  ls -l /tmp/tcpdump*.rpm
+   41  rpm -Uvh --replacepkgs /tmp/tcpdump*.rpm
+   42  rpm -q tcpdump
+   43  tcpdump --version
+   44  cp /tmp/tcpdump*.rpm /home/arina/tcpdump.rpm
+   45  chown arina:arina /home/arina/tcpdump.rpm
+   46  ls -l /home/arina/tcpdump.rpm
+   47  dnf install -y   --disablerepo='rpmfusion*'   --disablerepo='google-chrome'   --disablerepo='copr:*'   --disablerepo='fedora-cisco-openh264'   git curl policycoreutils-python-utils libcap openssh-server
+   48  command -v git
+   49  command -v curl
+   50  command -v semanage
+   51  command -v restorecon
+   52  command -v setcap
+   53  command -v getcap
+   54  command -v sshd
+   55  cp -f /tmp/tcpdump-*.rpm /home/arina/tcpdump.rpm
+   56  chown arina:arina /home/arina/tcpdump.rpm
+   57  ls -l /home/arina/tcpdump.rpm
+   58  rpm -q nginx tcpdump libcap-ng-utils
+   59  nginx -v
+   60  tcpdump --version
+   61  ls -l /tmp/tcpdump*.rpm
+   62  ls -l /home/arina/tcpdump.rpm
+   63  poweroff
+   64  nmcli connection modify mephi-static   ipv4.method manual   ipv4.addresses 192.168.1.100/24   ipv4.gateway 192.168.1.1   ipv4.dns 8.8.8.8   ipv4.ignore-auto-dns yes   ipv6.method disabled   connection.autoconnect yes
+   65  nmcli connection modify "Проводное подключение 1" connection.autoconnect no
+   66  nmcli connection down "Проводное подключение 1" || true
+   67  nmcli connection up mephi-static
+   68  hostnamectl --static
+   69  ip -4 addr show enp0s3
+   70  ip route show default
+   71  nmcli device show enp0s3 | grep -E 'IP4.ADDRESS|IP4.GATEWAY|IP4.DNS'
+   72  ping -c 4 192.168.1.1
+   73  ping -c 4 8.8.8.8
+   74  ping -c 4 8.8.8.8 > /tmp/network_check.txt
+   75  ping -c 4 192.168.1.1 >> /tmp/network_check.txt
+   76  cp /tmp/network_check.txt /home/arina/network_check.txt
+   77  chown arina:arina /home/arina/network_check.txt
+   78  ls -l /tmp/network_check.txt /home/arina/network_check.txt
+   79  lsblk -f
+   80  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+   81  poweroff
+   82  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+   83  parted -s /dev/sdb mklabel gpt
+   84  parted -s /dev/sdb mkpart primary ext4 0% 100%
+   85  partprobe /dev/sdb
+   86  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+   87  mkfs.ext4 -F -L MEPHI_DATA /dev/sdb1
+   88  lsblk -f
+   89  mkdir -p /data/mephi-web
+   90  ls -ld /data/mephi-web
+   91  cp /etc/fstab /etc/fstab.bak
+   92  echo 'LABEL=MEPHI_DATA /data/mephi-web ext4 defaults 0 2' >> /etc/fstab
+   93  grep MEPHI_DATA /etc/fstab
+   94  mount -a
+   95  findmnt /data/mephi-web
+   96  df -h /data/mephi-web
+   97  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+   98  systemctl daemon-reload
+   99  mount -a
+  100  findmnt /data/mephi-web
+  101  cp /etc/fstab /home/arina/fstab.txt
+  102  chown arina:arina /home/arina/fstab.txt
+  103  ls -l /home/arina/fstab.txt
+  104  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+  105  grep MEPHI_DATA /etc/fstab
+  106  findmnt /data/mephi-web
+  107  df -h /data/mephi-web
+  108  systemctl enable --now nginx
+  109  systemctl is-active nginx
+  110  systemctl is-enabled nginx
+  111  systemctl status nginx --no-pager
+  112  journalctl -u nginx --since "5 minutes ago" > /tmp/nginx_recent_logs.txt
+  113  cat /tmp/nginx_recent_logs.txt
+  114  ls -l /tmp/nginx_recent_logs.txt
+  115  cp /tmp/nginx_recent_logs.txt /home/arina/nginx_recent_logs.txt
+  116  chown arina:arina /home/arina/nginx_recent_logs.txt
+  117  ls -l /home/arina/nginx_recent_logs.txt
+  118  systemctl is-active nginx
+  119  systemctl is-enabled nginx
+  120  systemctl status nginx --no-pager
+  121  ls -l /tmp/nginx_recent_logs.txt /home/arina/nginx_recent_logs.txt
+  122  reboot
+  123  findmnt /data/mephi-web
+  124  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+  125  systemctl is-active nginx
+  126  systemctl is-enabled nginx
+  127  getent group mephi-devs || groupadd mephi-devs
+  128  id mephi-admin || useradd -m -s /bin/bash mephi-admin
+  129  echo 'mephi-admin:P@ssw0rd2026' | chpasswd
+  130  usermod -aG mephi-devs mephi-admin
+  131  chown mephi-admin:mephi-devs /data/mephi-web
+  132  chmod 2775 /data/mephi-web
+  133  passwd -S mephi-admin
+  134  id mephi-admin
+  135  stat -c '%A %a %U %G %n' /data/mephi-web
+  136  su - mephi-admin -c 'whoami; pwd; touch /data/mephi-web/dac_test.txt; ls -l /data/mephi-web/dac_test.txt; rm -f /data/mephi-web/dac_test.txt'
+  137  stat /data/mephi-web > /home/arina/permissions.txt
+  138  id mephi-admin > /home/arina/users_groups.txt
+  139  getent group mephi-devs >> /home/arina/users_groups.txt
+  140  passwd -S mephi-admin >> /home/arina/users_groups.txt
+  141  chown arina:arina /home/arina/permissions.txt /home/arina/users_groups.txt
+  142  cat /home/arina/permissions.txt
+  143  cat /home/arina/users_groups.txt
+  144  ls -l /home/arina/permissions.txt /home/arina/users_groups.txt
+  145  getenforce
+  146  semanage fcontext -a -t httpd_sys_content_t '/data/mephi-web(/.*)?' 2>/dev/null || semanage fcontext -m -t httpd_sys_content_t '/data/mephi-web(/.*)?'
+  147  restorecon -Rv /data/mephi-web
+  148  ls -Zd /data/mephi-web
+  149  cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+  150  grep -n 'root ' /etc/nginx/nginx.conf
+  151  sed -i 's|root         /usr/share/nginx/html;|root         /data/mephi-web;|' /etc/nginx/nginx.conf
+  152  grep -n 'root ' /etc/nginx/nginx.conf
+  153  nginx -t
+  154  systemctl restart nginx
+  155  systemctl is-active nginx
+  156  echo 'SELinux nginx test' > /data/mephi-web/selinux_test.txt
+  157  chown mephi-admin:mephi-devs /data/mephi-web/selinux_test.txt
+  158  restorecon -v /data/mephi-web/selinux_test.txt
+  159  curl http://localhost/selinux_test.txt
+  160  rm -f /data/mephi-web/selinux_test.txt
+  161  command -v tcpdump
+  162  TCPDUMP_PATH="$(command -v tcpdump)"
+  163  echo "$TCPDUMP_PATH"
+  164  chmod u-s "$TCPDUMP_PATH"
+  165  setcap cap_net_raw,cap_net_admin+ep "$TCPDUMP_PATH"
+  166  getcap "$TCPDUMP_PATH"
+  167  su - mephi-admin -c 'tcpdump --help >/tmp/tcpdump_help_check.txt 2>&1; echo exit_code=$?; head -n 3 /tmp/tcpdump_help_check.txt'
+  168  getenforce > /home/arina/selinux_status.txt
+  169  ls -Zd /data/mephi-web > /home/arina/file_contexts.txt
+  170  semanage fcontext -l | grep '/data/mephi-web' >> /home/arina/file_contexts.txt
+  171  getcap "$(command -v tcpdump)" > /home/arina/tcpdump_capabilities.txt
+  172  chown arina:arina /home/arina/selinux_status.txt /home/arina/file_contexts.txt /home/arina/tcpdump_capabilities.txt
+  173  cat /home/arina/selinux_status.txt
+  174  cat /home/arina/file_contexts.txt
+  175  cat /home/arina/tcpdump_capabilities.txt
+  176  mkdir -p /etc/ssh
+  177  echo root > /etc/ssh/denied_users
+  178  chmod 600 /etc/ssh/denied_users
+  179  chown root:root /etc/ssh/denied_users
+  180  cat /etc/ssh/denied_users
+  181  cp /etc/pam.d/login /etc/pam.d/login.bak
+  182  cp /etc/pam.d/sshd /etc/pam.d/sshd.bak
+  183  grep -q 'pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users' /etc/pam.d/login || sed -i '1a auth required pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users onerr=succeed' /etc/pam.d/login
+  184  grep pam_listfile /etc/pam.d/login
+  185  grep -q 'pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users' /etc/pam.d/sshd || sed -i '1a auth required pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users onerr=succeed' /etc/pam.d/sshd
+  186  grep pam_listfile /etc/pam.d/sshd
+  187  cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+  188  grep -q '^PermitRootLogin' /etc/ssh/sshd_config && sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config || echo 'PermitRootLogin no' >> /etc/ssh/sshd_config
+  189  grep '^PermitRootLogin' /etc/ssh/sshd_config
+  190  systemctl enable --now sshd
+  191  systemctl is-active sshd
+  192  systemctl is-enabled sshd
+  193  su - mephi-admin -c 'whoami; pwd'
+  194  mephi-admin
+  195  /home/mephi-admin
+  196  su - arina -c 'whoami; pwd'
+  197  sshd -t
+  198  cat /etc/ssh/denied_users
+  199  grep pam_listfile /etc/pam.d/login
+  200  grep pam_listfile /etc/pam.d/sshd
+  201  grep '^PermitRootLogin' /etc/ssh/sshd_config
+  202  {   echo "=== denied_users ===";   cat /etc/ssh/denied_users;    echo;   echo "=== PAM login ===";   grep pam_listfile /etc/pam.d/login;    echo;   echo "=== PAM sshd ===";   grep pam_listfile /etc/pam.d/sshd;    echo;   echo "=== SSH root login ===";   grep '^PermitRootLogin' /etc/ssh/sshd_config;    echo;   echo "=== sshd status ===";   systemctl is-active sshd;   systemctl is-enabled sshd;    echo;   echo "=== regular users check ===";   su - mephi-admin -c 'whoami; pwd';   su - arina -c 'whoami; pwd'; } > /home/arina/auth_config.txt
+  203  chown arina:arina /home/arina/auth_config.txt
+  204  cat /home/arina/auth_config.txt
+  205  ls -l /home/arina/auth_config.txt
+  206  {   echo "=== denied_users ===";   cat /etc/ssh/denied_users;    echo;   echo "=== PAM login ===";   grep pam_listfile /etc/pam.d/login;    echo;   echo "=== PAM sshd ===";   grep pam_listfile /etc/pam.d/sshd;    echo;   echo "=== SSH root login ===";   grep '^PermitRootLogin' /etc/ssh/sshd_config;    echo;   echo "=== sshd status ===";   systemctl is-active sshd;   systemctl is-enabled sshd;    echo;   echo "=== regular users check ===";   su - mephi-admin -c 'whoami; pwd';   su - arina -c 'whoami; pwd'; } > /home/arina/auth_config.txt
+  207  chown arina:arina /home/arina/auth_config.txt
+  208  cat /home/arina/auth_config.txt
+  209  ls -l /home/arina/auth_config.txt
+  210  su - mephi-admin -c "printf '%s\n' 'Hello from Student: M2551136' > /data/mephi-web/index.html"
+  211  cat /data/mephi-web/index.html
+  212  ls -l /data/mephi-web/index.html
+  213  Hello from Student: M2551136
+  214  cat /data/mephi-web/index.html
+  215  ls -l /data/mephi-web/index.html
+  216  restorecon -v /data/mephi-web/index.html
+  217  ls -Z /data/mephi-web/index.html
+  218  cp /data/mephi-web/index.html /home/arina/index.html
+  219  chown arina:arina /home/arina/index.html
+  220  ls -l /home/arina/index.html
+  221  cat /home/arina/index.html
+  222  systemctl is-active nginx
+  223  curl http://localhost
+  224  curl http://192.168.1.100
+  225  {   echo "=== curl http://localhost ===";   curl -s http://localhost;    echo;   echo "=== curl http://192.168.1.100 ===";   curl -s http://192.168.1.100; } > /home/arina/curl_output.txt
+  226  chown arina:arina /home/arina/curl_output.txt
+  227  cat /home/arina/curl_output.txt
+  228  ls -l /home/arina/curl_output.txt
+  229  # 1. История команд
+  230  history > /home/arina/project_history.txt
+  231  # 2. Сеть
+  232  cp /tmp/network_check.txt /home/arina/network_check.txt
+  233  # 3. Логи nginx
+  234  journalctl -u nginx --since "5 minutes ago" > /tmp/nginx_recent_logs.txt
+  235  cp /tmp/nginx_recent_logs.txt /home/arina/nginx_recent_logs.txt
+  236  # 4. fstab
+  237  cp /etc/fstab /home/arina/fstab.txt
+  238  # 5. SELinux
+  239  getenforce > /home/arina/selinux_status.txt
+  240  # 6. SELinux-контексты
+  241  {   ls -Zd /data/mephi-web;   ls -Z /data/mephi-web/index.html;   semanage fcontext -l | grep '/data/mephi-web'; } > /home/arina/file_contexts.txt
+  242  # 7. Capabilities tcpdump
+  243  getcap "$(command -v tcpdump)" > /home/arina/tcpdump_capabilities.txt
+  244  # 8. Права и владелец директории
+  245  stat /data/mephi-web > /home/arina/permissions.txt
+  246  # 9. Пользователи и группы
+  247  {   id mephi-admin;   getent group mephi-devs;   passwd -S mephi-admin; } > /home/arina/users_groups.txt
+  248  # 10. index.html
+  249  cp /data/mephi-web/index.html /home/arina/index.html
+  250  # 11. curl output
+  251  {   echo "=== curl http://localhost ===";   curl -s http://localhost;    echo;   echo "=== curl http://192.168.1.100 ===";   curl -s http://192.168.1.100; } > /home/arina/curl_output.txt
+  252  # 12. tcpdump RPM
+  253  cp -f /tmp/tcpdump-*.rpm /home/arina/tcpdump.rpm
+  254  # 13. auth config, дополнительный файл на всякий случай
+  255  {   echo "=== denied_users ===";   cat /etc/ssh/denied_users;    echo;   echo "=== PAM login ===";   grep pam_listfile /etc/pam.d/login;    echo;   echo "=== PAM sshd ===";   grep pam_listfile /etc/pam.d/sshd;    echo;   echo "=== SSH root login ===";   grep '^PermitRootLogin' /etc/ssh/sshd_config;    echo;   echo "=== sshd status ===";   systemctl is-active sshd;   systemctl is-enabled sshd;    echo;   echo "=== regular users check ===";   su - mephi-admin -c 'whoami; pwd';   su - arina -c 'whoami; pwd'; } > /home/arina/auth_config.txt
+  256  # 14. Права на файлы для arina
+  257  chown arina:arina /home/arina/*.txt /home/arina/index.html /home/arina/tcpdump.rpm
+  258  # 1. История команд
+  259  history > /home/arina/project_history.txt
+  260  # 2. Сеть - заново создаём /tmp/network_check.txt, потому что /tmp мог очиститься
+  261  ping -c 4 8.8.8.8 > /tmp/network_check.txt
+  262  ping -c 4 192.168.1.1 >> /tmp/network_check.txt
+  263  cp -f /tmp/network_check.txt /home/arina/network_check.txt
+  264  # 3. Логи nginx
+  265  journalctl -u nginx --since "5 minutes ago" > /tmp/nginx_recent_logs.txt
+  266  cp -f /tmp/nginx_recent_logs.txt /home/arina/nginx_recent_logs.txt
+  267  # 4. fstab
+  268  cp -f /etc/fstab /home/arina/fstab.txt
+  269  # 5. SELinux
+  270  getenforce > /home/arina/selinux_status.txt
+  271  # 6. SELinux-контексты
+  272  {   ls -Zd /data/mephi-web;   ls -Z /data/mephi-web/index.html;   semanage fcontext -l | grep '/data/mephi-web'; } > /home/arina/file_contexts.txt
+  273  # 7. Capabilities tcpdump
+  274  getcap "$(command -v tcpdump)" > /home/arina/tcpdump_capabilities.txt
+  275  # 8. Права и владелец директории
+  276  stat /data/mephi-web > /home/arina/permissions.txt
+  277  # 9. Пользователи и группы
+  278  {   id mephi-admin;   getent group mephi-devs;   passwd -S mephi-admin; } > /home/arina/users_groups.txt
+  279  # 10. index.html
+  280  cp -f /data/mephi-web/index.html /home/arina/index.html
+  281  # 11. curl output
+  282  {   echo "=== curl http://localhost ===";   curl -s http://localhost;    echo;   echo "=== curl http://192.168.1.100 ===";   curl -s http://192.168.1.100; } > /home/arina/curl_output.txt
+  283  # 12. tcpdump RPM
+  284  cp -f /tmp/tcpdump-*.rpm /home/arina/tcpdump.rpm
+  285  # 13. auth config
+  286  {   echo "=== denied_users ===";   cat /etc/ssh/denied_users;    echo;   echo "=== PAM login ===";   grep pam_listfile /etc/pam.d/login;    echo;   echo "=== PAM sshd ===";   grep pam_listfile /etc/pam.d/sshd;    echo;   echo "=== SSH root login ===";   grep '^PermitRootLogin' /etc/ssh/sshd_config;    echo;   echo "=== sshd status ===";   systemctl is-active sshd;   systemctl is-enabled sshd;    echo;   echo "=== regular users check ===";   su - mephi-admin -c 'whoami; pwd';   su - arina -c 'whoami; pwd'; } > /home/arina/auth_config.txt
+  287  # 14. Права на файлы для arina
+  288  chown arina:arina /home/arina/*.txt /home/arina/index.html /home/arina/tcpdump.rpm
+  289  alias cp
+  290  unalias cp
+  291  alias cp
+  292  history > /home/arina/project_history.txt

@@ -1,0 +1,5 @@
+=== curl http://localhost ===
+Hello from Student: M2551136
+
+=== curl http://192.168.1.100 ===
+Hello from Student: M2551136

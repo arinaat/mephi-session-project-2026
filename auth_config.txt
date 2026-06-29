@@ -1,0 +1,21 @@
+=== denied_users ===
+root
+
+=== PAM login ===
+auth required pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users onerr=succeed
+
+=== PAM sshd ===
+auth required pam_listfile.so item=user sense=deny file=/etc/ssh/denied_users onerr=succeed
+
+=== SSH root login ===
+PermitRootLogin no
+
+=== sshd status ===
+active
+enabled
+
+=== regular users check ===
+mephi-admin
+/home/mephi-admin
+arina
+/home/arina
