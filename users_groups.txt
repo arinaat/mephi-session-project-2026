@@ -1,2 +1,15 @@
+=== Пользователь mephi-admin ===
 uid=5506(mephi-admin) gid=5507(mephi-admin) группы=5507(mephi-admin),5506(mephi-devs)
+
+=== Группа mephi-devs ===
 mephi-devs:x:5506:mephi-admin
+
+=== Статус пароля ===
+
+=== Проверка пароля через shadow без вывода хеша ===
+пароль установлен
+
+=== Проверка записи от имени mephi-admin ===
+mephi-admin
+/home/mephi-admin
+-rw-r--r--. 1 mephi-admin mephi-devs 0 июн 30 09:52 /data/mephi-web/user_write_check.txt
